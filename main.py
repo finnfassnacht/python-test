@@ -1,25 +1,28 @@
-from http.server import BaseHTTPRequestHandler, HTTPServer
+# Importing flask module in the project is mandatory
+# An object of Flask class is our WSGI application.
+from flask import Flask
 
-hostName = "localhost"
-serverPort = 8080
+# Flask constructor takes the name of
+# current module (__name__) as argument.
+app = Flask(__name__)
 
-class MyServer(BaseHTTPRequestHandler):
-    def do_GET(self):
-        self.send_response(200)
-        self.send_header("Content-type", "text/html")
-        self.end_headers()
-        self.wfile.write(bytes("<html><head>", "utf-8"))
-        self.wfile.write(bytes("<body>", "utf-8"))
-        self.wfile.write(bytes("<p>PYTHON SERVER!!</p>", "utf-8"))
-        self.wfile.write(bytes("</body></html>", "utf-8"))
+# The route() function of the Flask class is a decorator,
+# which tells the application which URL should call
+# the associated function.
+@app.route('/')
+# ‘/’ URL is bound with hello_world() function.
+def msg():
+	return 'Python server!!'
 
-if __name__ == "__main__":        
-    webServer = HTTPServer((hostName, serverPort), MyServer)
+@app.route('/test')
+# ‘/’ URL is bound with hello_world() function.
+def test():
+	return 'TEST from Python server!!'
 
-    try:
-        webServer.serve_forever()
-    except KeyboardInterrupt:
-        pass
 
-    webServer.server_close()
-    print("Server stopped.")
+# main driver function
+if __name__ == '__main__':
+
+	# run() method of Flask class runs the application
+	# on the local development server.
+	app.run(port=8080)
